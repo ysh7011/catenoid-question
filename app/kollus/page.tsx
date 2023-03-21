@@ -22,6 +22,8 @@ const Index = () => {
     let time = controller.get_current_time()
     console.log("time", time)
     console.log('duration', duration)
+
+    setVideoCurrentTime(position)
   })
 
 
@@ -52,6 +54,7 @@ const Index = () => {
         <button onClick={() => playClicked()}>재생</button>
         <button onClick={() => pauseClicked()}>일시정지</button>
       </div>
+      <p>재생시간: {videoCurrentTime}</p>
     </div>
   )
 }
