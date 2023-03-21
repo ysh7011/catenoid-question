@@ -1,53 +1,71 @@
 "use client"
 
 import React from 'react'
+declare var VgControllerClient: any
 
 const Index = () => {
+  const [controller, setController] = React.useState<any>()
   const testSrc = "https://v.kr.kollus.com/XoABcTpT?"
   
   const iframeRef = React.useRef<any>()
   const [videoCurrentTime, setVideoCurrentTime] = React.useState(0)
+
+  const load = React.useCallback<any>(() => {
+    const vgController = new VgControllerClient({
+      target_window: iframeRef.current?.contentWindow
+    })
+
+    vgController.on('progress', (percent: number, position: number, duration: number) => {
+      console.log('percent', percent)
+      console.log('position', position)
+      let time = vgController.get_current_time()
+      console.log("time", time)
+      console.log('duration', duration)
   
-  React.useEffect(() => {
-    console.log("iframeRef", iframeRef.current?.contentWindow)
-  }, [iframeRef])
+      setVideoCurrentTime(position)
+    })
 
-  const controller = new VgControllerClient({
-    target_window: iframeRef.current?.contentWindow
-  })
-  
-  controller.on('progress', (percent: number, position: number, duration: number) => {
-    console.log('percent', percent)
-    console.log('position', position)
-    let time = controller.get_current_time()
-    console.log("time", time)
-    console.log('duration', duration)
-
-    setVideoCurrentTime(position)
-  })
-
-
-  console.log("controller", controller)
-  console.log("videoCurrentTime", videoCurrentTime)
+    setController(vgController)
+  }, [])
 
   const playClicked = () => {
     controller.play()
   }
-  
   const pauseClicked = () => {
     controller.pause()
   }
 
+  // const playClicked = React.useCallback<any>(() => {
+  //   controller.play(true)
+  // }, [controller])
+
+  // const pauseClicked = React.useCallback<any>(() => {
+  //   controller.pause()
+  // }, [controller])
+  
+  // React.useEffect(() => {
+  //   if(!controller) return
+  //   console.log("iframeRef", iframeRef.current?.contentWindow)
+  //   iframeRef.current.focus()
+  // }, [iframeRef, controller])
+
+  
+  console.log("controller", controller)
+  console.log("videoCurrentTime", videoCurrentTime)
+  
   return (
     <div>
       <iframe
         src={testSrc ?? ''}
-        allow="encrypted-media"
+        frameBorder="0"
+        allow="encrypted-media;autoplay"
         allowFullScreen={true}
         id="video-iframe"
         ref={iframeRef}
+        onLoad={load}
+        // width={650}
+        // height={300}
       >
-
       </iframe>
       
       <div>
