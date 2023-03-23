@@ -5,7 +5,12 @@ declare var VgControllerClient: any
 
 const Index = () => {
   const [controller, setController] = React.useState<any>()
-  const testSrc = "https://v.kr.kollus.com/XoABcTpT?"
+
+  // 새로고침을 염두하여 testSrc를 초기에 업데이트를 시켜야한다.
+  const [testSrc, setTestSrc] = React.useState('')
+  React.useEffect(() => {
+    setTestSrc("https://v.kr.kollus.com/XoABcTpT?")
+  }, [])
   
   const iframeRef = React.useRef<any>()
   const [videoCurrentTime, setVideoCurrentTime] = React.useState(0)
