@@ -74,6 +74,9 @@ const Index = () => {
       </div>
       <p>{timeToString(videoCurrentTime, true)}</p>
       <div>
+      videoCurrentTime: {videoCurrentTime}
+      </div>
+      <div>
         <button onClick={() => progressOnChange(4.22)}>4.22초로 이동</button>
       </div>
       <div>
